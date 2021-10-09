@@ -1,10 +1,16 @@
 {
-  "name": "dereksproblem",
-  "version": "1.0.0",
-  "main": "index.js",
-  "license": "MIT",
-  "dependencies": {
-    "ts-node": "^10.2.1",
-    "typescript": "^4.4.3"
-  }
+    "name": "dereksproblem",
+    "version": "1.0.0",
+    "main": "index.js",
+    "license": "MIT",
+    "scripts": {
+        "start": "nodemon src/index.js",
+        "watch": "tsc -w"
+    },
+    "dependencies": {
+        "concurrently": "^6.3.0",
+        "nodemon": "^2.0.13",
+        "ts-node": "^10.2.1",
+        "typescript": "^4.4.3"
+    }
 }

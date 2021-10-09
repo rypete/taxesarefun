@@ -1,6 +1,6 @@
-import { AppendFutureParameters } from './appendFutureParameters';
-import { TaxParameter } from './types';
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var appendFutureParameters_1 = require("./appendFutureParameters");
 // public IEnumerable<TaxParameter> AppendFutureParameters(IEnumerable<TaxParameter> currentParameters, IEnumerable<TaxParameter> futureParameters)
 // {
 //     foreach (TaxParameter currentParam in currentParameters)
@@ -17,15 +17,12 @@ import { TaxParameter } from './types';
 //             }
 //         }
 //     }
-
 //     IEnumerable<string> currentKeys = currentParameters.Select(x => x.Key);
 //     IEnumerable<TaxParameter> futureParams = futureParameters.Where(x => !currentKeys.Contains(x.Key));
 //     currentParameters = currentParameters.Concat(futureParams);
-
 //     return currentParameters;
 // }
-
-const current: TaxParameter[] = [
+var current = [
     {
         Key: '2020_W4',
         Description: '2020 W4',
@@ -202,8 +199,7 @@ const current: TaxParameter[] = [
         StateCode: 'CO',
     },
 ];
-
-const future: TaxParameter[] = [
+var future = [
     {
         Key: '2020_W4',
         Description: '2020 W4',
@@ -390,5 +386,4 @@ const future: TaxParameter[] = [
         StateCode: 'CO',
     },
 ];
-
-console.log(JSON.stringify(AppendFutureParameters(current, future), null, 2));
+console.log(JSON.stringify((0, appendFutureParameters_1.AppendFutureParameters)(current, future), null, 2));
