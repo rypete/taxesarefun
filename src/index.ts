@@ -1,5 +1,5 @@
 import { AppendFutureParameters } from './appendFutureParameters';
-import { TaxParameter } from './types';
+import { TaxParameter } from './interfaces';
 
 // public IEnumerable<TaxParameter> AppendFutureParameters(IEnumerable<TaxParameter> currentParameters, IEnumerable<TaxParameter> futureParameters)
 // {
