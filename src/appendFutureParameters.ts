@@ -50,10 +50,15 @@ export function AppendFutureParameters(currentParameters: TaxParameter[], future
             continue;
         }
 
-        // If we get here we know that future params are not null so we need to be ready to accept new values.
+        // If we get here we know that future params values arent null, but our current param values are
+        // so just accept all and mark as our currents new values.
         if (currentParam.Values === null) {
-            // If we're null we will make ourselves an array to be uniform.
-            currentParam.Values = [];
+            futureParamByTaxCode.Values = futureParamValues.map((futureParamValue) => {
+                futureParamValue.IsFutureValue = true;
+                return futureParamValue;
+            });
+
+            continue;
         }
 
         // At this point we can be in one of the following states:
