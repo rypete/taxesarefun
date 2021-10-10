@@ -1,49 +1,34 @@
-import { createListFromLookupMap } from './createListFromLookupMap';
 import { createLookupMap } from './createLookupMap';
+import { createParameterKey } from './createParameterKey';
 import { TaxParameter, TaxParameterLookupMap, TaxParameterValue } from './interfaces';
 
 export function AppendFutureParameters(currentParameters: TaxParameter[], futureParameters: TaxParameter[]): TaxParameter[] {
+    // Create a lookup map for all of the future parameters.
     const futureParametersMap: TaxParameterLookupMap = createLookupMap(futureParameters);
 
     // Iterate over all of the currentParameters
     for (const currentParam of currentParameters) {
-        // Get our current parameters Key from the futures map
-        const futureParamByKey: Map<string, TaxParameter> | undefined = futureParametersMap.get(currentParam.Key);
+        // Attempt to get our current parameter from the future parameters lookup map
+        const futureParamForCurrentParam: TaxParameter | undefined = futureParametersMap.get(createParameterKey(currentParam));
 
         // undefined | null = deleted
-        if (futureParamByKey === undefined || futureParamByKey === null) {
-            // if we are here, we have an orphaned current parameter by key so we add it back to the futures
-
-            const taxCodeMap = new Map();
-            taxCodeMap.set(currentParam.TaxCode, currentParam);
-
-            futureParametersMap.set(currentParam.Key, taxCodeMap);
+        if (futureParamForCurrentParam === undefined || futureParamForCurrentParam === null) {
+            // if we are here, we have an orphaned current parameter so we add it back in to the future parameters
+            futureParameters.push(currentParam);
 
             // Nothing more to do, go to next iteration
             continue;
         }
 
-        // Since we know our current parameters key exists, we will try and get the tax code now.
-        const futureParamByTaxCode: TaxParameter | null | undefined = futureParamByKey.get(currentParam.TaxCode);
-
-        // undefined | null = deleted
-        if (futureParamByTaxCode === undefined || futureParamByTaxCode === null) {
-            // if we are here, we have an orphaned current parameter by taxcode so we add it back to the future parameter under the existing key.
-            futureParamByKey.set(currentParam.TaxCode, currentParam);
-
-            // Nothing more to do, go to next iteration;
-            continue;
-        }
-
-        // We now know that our current parameters Key and TaxCode exist, so we can get the values.
-        const futureParamValues: TaxParameterValue[] | null = futureParamByTaxCode.Values;
+        // We now know that our current parameter exists in the future parameter, we can get the values.
+        const futureParamValues: TaxParameterValue[] | null = futureParamForCurrentParam.Values;
 
         if (futureParamValues === null) {
             if (currentParam.Values !== null) {
                 // If the future parameters values are null and our currents arent, add them back in
 
                 // Note: This value is by reference, so the value will be updated in the map
-                futureParamByTaxCode.Values = currentParam.Values;
+                futureParamForCurrentParam.Values = currentParam.Values;
             }
 
             // Nothing more to do, go to next iteration
@@ -53,7 +38,7 @@ export function AppendFutureParameters(currentParameters: TaxParameter[], future
         // If we get here we know that future params values arent null, but our current param values are
         // so just accept all and mark as our currents new values.
         if (currentParam.Values === null) {
-            futureParamByTaxCode.Values = futureParamValues.map((futureParamValue) => {
+            futureParamForCurrentParam.Values = futureParamValues.map((futureParamValue) => {
                 futureParamValue.IsFutureValue = true;
                 return futureParamValue;
             });
@@ -97,12 +82,11 @@ export function AppendFutureParameters(currentParameters: TaxParameter[], future
 
         // Concat the currents (to restore any deleted values) with the new future params
         // Note: this value is by reference so the primary future parameters map will be updated.
-        futureParamByTaxCode.Values = currentParam.Values.concat(newFutureParamValues);
+        futureParamForCurrentParam.Values = currentParam.Values.concat(newFutureParamValues);
     }
 
     // Our future parameters map will have any new Keys and TaxCodes added by default
     // Then have any currents which were deleted added back
     // And any new parameter values marked true.
-    // We now need to transform our map back to an array and return;
-    return createListFromLookupMap(futureParametersMap);
+    return futureParameters;
 }
