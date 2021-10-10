@@ -1,11 +1,12 @@
 {
     "name": "dereksproblem",
     "version": "1.0.0",
-    "main": "index.js",
     "license": "MIT",
     "scripts": {
-        "start": "nodemon build/index.js",
-        "watch": "tsc -w"
+        "start": "concurrently 'yarn watch' 'yarn runner'",
+        "watch": "tsc -w",
+        "runner": "nodemon build/src/index.js",
+        "test": "jest"
     },
     "dependencies": {
         "@types/node": "^16.10.3",

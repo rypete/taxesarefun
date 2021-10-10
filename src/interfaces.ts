@@ -14,3 +14,5 @@ export interface TaxParameterValue {
     Description: string;
     IsFutureValue: boolean;
 }
+
+export type TaxParameterLookupMap = Map<string, Map<string, TaxParameter>>;
