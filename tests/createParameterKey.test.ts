@@ -4,7 +4,7 @@ import { createParameter } from './utils/creators';
 
 describe('createParameterKey', () => {
     it('should return a key for the provided parameter', () => {
-        const parameter: TaxParameter = createParameter('foo', 'bar', null);
+        const parameter: TaxParameter = createParameter('foo', 'bar');
         const key: string = createParameterKey(parameter);
 
         expect(key).toEqual('foo-bar');

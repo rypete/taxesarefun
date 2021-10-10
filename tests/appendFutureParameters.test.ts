@@ -39,7 +39,7 @@ describe('appendFutureParameters', () => {
     describe('when adding new parameters to future parameters', () => {
         it('should merge with current parameters when the future parameter has a new `Key`', () => {
             const currentParameters: TaxParameter[] = [createParameter('foo', 'bar', ['baz'])];
-            const futureParameters: TaxParameter[] = currentParameters.concat(createParameter('foo2', 'bar', null));
+            const futureParameters: TaxParameter[] = currentParameters.concat(createParameter('foo2', 'bar'));
 
             const results = sortForExpect(AppendFutureParameters(currentParameters, futureParameters));
             const expected = sortForExpect(futureParameters);
@@ -49,7 +49,7 @@ describe('appendFutureParameters', () => {
 
         it('should merge with current parameters when the future parameter has an existing `Key` and has a new `TaxCode`', () => {
             const currentParameters: TaxParameter[] = [createParameter('foo', 'bar', ['baz'])];
-            const futureParameters: TaxParameter[] = currentParameters.concat(createParameter('foo', 'bar2', null));
+            const futureParameters: TaxParameter[] = currentParameters.concat(createParameter('foo', 'bar2'));
 
             const results = AppendFutureParameters(currentParameters, futureParameters);
             const expected = sortForExpect(futureParameters);
@@ -59,7 +59,7 @@ describe('appendFutureParameters', () => {
 
         it('should merge with current parameters when the future parameter has a new `Key` and new `TaxCode`', () => {
             const currentParameters: TaxParameter[] = [createParameter('foo', 'bar', ['baz'])];
-            const futureParameters: TaxParameter[] = currentParameters.concat(createParameter('foo2', 'bar2', null));
+            const futureParameters: TaxParameter[] = currentParameters.concat(createParameter('foo2', 'bar2'));
 
             const results = AppendFutureParameters(currentParameters, futureParameters);
             const expected = sortForExpect(futureParameters);
@@ -114,8 +114,8 @@ describe('appendFutureParameters', () => {
 
     describe('when some params have null values', () => {
         it('should do return the current parameters when current params value is null and the future params value is null', () => {
-            const current = [createParameter('foo', 'bar', null)];
-            const future = [createParameter('foo', 'bar', null)];
+            const current = [createParameter('foo', 'bar')];
+            const future = [createParameter('foo', 'bar')];
 
             const results = sortForExpect(AppendFutureParameters(current, future));
             const expected = sortForExpect(future);
@@ -124,7 +124,7 @@ describe('appendFutureParameters', () => {
         });
 
         it('should use the future parameters value when the current params values are null', () => {
-            const current = [createParameter('foo', 'bar', null)];
+            const current = [createParameter('foo', 'bar')];
             const future = [createParameter('foo', 'bar', ['baz'])];
 
             const results = sortForExpect(AppendFutureParameters(current, future));
@@ -135,7 +135,7 @@ describe('appendFutureParameters', () => {
 
         it('should retain the current param values when the future param values are null', () => {
             const current = [createParameter('foo', 'bar', ['baz'])];
-            const future = [createParameter('foo', 'bar', null)];
+            const future = [createParameter('foo', 'bar')];
 
             const results = sortForExpect(AppendFutureParameters(current, future));
             const expected = sortForExpect(current);

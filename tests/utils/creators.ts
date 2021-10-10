@@ -1,10 +1,10 @@
 import deepmerge from 'deepmerge';
 import { TaxParameter, TaxParameterValue } from '../../src/interfaces';
 
-export function createParameter(key: string, taxCode: string, values: (string | [string, boolean])[] | null): TaxParameter {
+export function createParameter(key: string, taxCode: string, values?: (string | [string, boolean])[]): TaxParameter {
     const paramValues: TaxParameterValue[] = [];
 
-    if (Array.isArray(values)) {
+    if (values) {
         values.forEach((value) => {
             if (Array.isArray(value)) {
                 paramValues.push(createParameterValue(value[0], value[1]));
