@@ -17,7 +17,7 @@ export function AppendFutureParameters(currentParameters: TaxParameter[], future
             const taxCodeMap = new Map();
             taxCodeMap.set(currentParam.TaxCode, currentParam);
 
-            futureParametersMap.set(currentParam.TaxCode, taxCodeMap);
+            futureParametersMap.set(currentParam.Key, taxCodeMap);
 
             // Nothing more to do, go to next iteration
             continue;
